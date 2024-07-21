@@ -88,15 +88,6 @@ namespace UV.EzyRagdoll.Editors
         /// </summary>
         protected virtual string WindowHeader => "Rig Window";
 
-        private void OnEnable()
-        {
-            _headerStyle = new(EditorStyles.boldLabel)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = EditorStyles.largeLabel.fontSize
-            };
-        }
-
         protected virtual void OnGUI()
         {
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
@@ -110,6 +101,12 @@ namespace UV.EzyRagdoll.Editors
         /// </summary>
         protected virtual void DrawWindowHeader()
         {
+            _headerStyle = new(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = EditorStyles.largeLabel.fontSize
+            };
+
             _headerStyle.fontSize *= 2;
             EditorGUILayout.LabelField(WindowHeader, _headerStyle, GUILayout.MinHeight(50));
             _headerStyle.fontSize /= 2;

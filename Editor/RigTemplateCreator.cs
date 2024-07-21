@@ -35,7 +35,7 @@ namespace UV.EzyRagdoll.Editors
         private void DrawCreateButton()
         {
             EditorGUILayout.Space(20);
-            GUI.enabled = _pelvis != null;
+            GUI.enabled = AreAllBonesValid();
             if (GUILayout.Button("Create"))
             {
                 //Create the SO
