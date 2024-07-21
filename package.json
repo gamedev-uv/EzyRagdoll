@@ -1,0 +1,19 @@
+{
+  "name": "com.uv.ezy-ragdoll",
+  "version": "1.0.0",
+  "displayName": "Ezy Ragdoll",
+  "description": "A small package which makes adding ragdolls to your game easier!",
+  "unity": "2019.1",
+  "documentationUrl": "https://github.com/gamedev-uv/EzyRagdoll",
+  "changelogUrl": "https://github.com/gamedev-uv/EzyRagdoll/commits",
+  "licensesUrl": "https://github.com/gamedev-uv/EzyRagdoll/blob/main/LICENSE",
+  "author": {
+    "name": "UV",
+    "email": "yuvraj12611@gmail.com",
+    "url": "https://github.com/gamedev-uv"
+  },
+  "dependencies": {
+    "com.uv.ezy-reflection": "1.0.0",
+    "com.uv.ezy-inspector": "1.0.0"
+  }
+}

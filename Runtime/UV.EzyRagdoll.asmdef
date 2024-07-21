@@ -1,0 +1,16 @@
+{
+    "name": "UV.EzyRagdoll",
+    "rootNamespace": "UV.EzyRagdoll",
+    "references": [
+        "GUID:ba53c5584dfadca4bb7b54b559778f88"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

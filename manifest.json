@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "com.uv.ezy-reflection": "1.0.0",
+    "com.uv.ezy-inspector": "1.0.0"
+  }
+}
