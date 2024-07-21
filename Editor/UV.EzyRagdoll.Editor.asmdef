@@ -1,0 +1,17 @@
+{
+    "name": "UV.EzyRagdoll.Editor",
+    "rootNamespace": "UV.EzyRagdoll.Editors",
+    "references": [
+        "GUID:9c82645eaf3b37549b0f1653ca16b142",
+        "GUID:fca8136c97091824cbe6afe2acbb3e94"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
