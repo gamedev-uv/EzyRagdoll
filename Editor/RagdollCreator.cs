@@ -112,7 +112,7 @@ namespace UV.EzyRagdoll.Editors
         {
             // Create an instance of RagdollBuilder
             var assembly = typeof(EditorWindow).Assembly;
-            var builderInstance = System.Activator.CreateInstance(assembly.GetType("UnityEditor.RagdollBuilder"));
+            var builderInstance = CreateInstance("UnityEditor.RagdollBuilder");
 
             //Create a Member representing the builderInstance; and find all its children
             var member = new Member(builderInstance);
@@ -145,6 +145,10 @@ namespace UV.EzyRagdoll.Editors
             //Call the methods 
             prepareBones.Invoke(builderInstance, null);
             createRagdoll.Invoke(builderInstance, null);
+
+            //Once the ragdoll is created
+            Selection.activeTransform = _pelvis;
+            Debug.Log($"Generated Ragdoll for : {_pelvis.name}", _pelvis);
         }
     }
 }
