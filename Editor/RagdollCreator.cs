@@ -13,7 +13,7 @@ namespace UV.EzyRagdoll.Editors
     {
         protected override string WindowHeader => "Ragdoll Creator";
 
-        [MenuItem("UV/Ragdoll Creator")]
+        [MenuItem("UV/Ezy Ragdoll/Ragdoll Creator")]
         public static void Initialize()
         {
             var window = GetWindow<RagdollCreator>();

@@ -13,7 +13,7 @@ namespace UV.EzyRagdoll.Editors
         /// <summary>
         /// Initializes the editor window
         /// </summary>
-        [MenuItem("UV/Rig Template Creator")]
+        [MenuItem("UV/Ezy Ragdoll/Rig Template Creator")]
         public static void Initialize()
         {
             var window = GetWindow<RigTemplateCreator>();
