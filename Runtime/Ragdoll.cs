@@ -40,12 +40,12 @@ namespace UV.EzyRagdoll
         /// Event which is called when the ragdoll is enabled
         /// </summary>
         [field: Header("Events")]
-        [field: SerializeField] public UnityEvent OnRagdollEnabled { get; private set; }
+        [field: SerializeField] public UnityEvent OnRagdollEnabled { get; set; }
 
         /// <summary>
         /// Event which is called when the ragdoll is disabled
         /// </summary>
-        [field: SerializeField] public UnityEvent OnRagdollDisabled { get; private set; }
+        [field: SerializeField] public UnityEvent OnRagdollDisabled { get; set; }
 
         private void Reset() => FindReferences();
 
