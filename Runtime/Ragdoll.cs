@@ -95,7 +95,7 @@ namespace UV.EzyRagdoll
             {
                 var collider = ChildrenColliders[i];
                 if (collider == null) continue;
-                collider.enabled = activationState;
+                collider.enabled = activationState ^ collider.transform == transform;
             }
         }
 
