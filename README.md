@@ -11,6 +11,7 @@ A small package which makes adding ragdolls to your game easier!
 - [Dependencies](#dependencies)
 - [Ragdoll Creator](#ragdoll-creator)
 - [Rig Template Creator](#rig-template-creator)
+- [Active Ragdoll Convertor](#active-ragdoll-convertor)
 - [Ragdoll.cs](#ragdollcs)
 
 ---
@@ -147,84 +148,147 @@ Conditions for the bones to be valid
 You will also get a HelpBox in the window itself whenever a bone is invalid. Something like this :
 ![](.README/rigtemplatewindow_invalidBone.png)
 
-# Ragdoll.cs
-## Data Members
+# Active Ragdoll Convertor
+In order to convert a pre existing ragdoll to an active ragdoll simply follow these steps :
 
-| Member | Type | Description |
-|--------|------|-------------|
-| `DisableRagdollAtStart` | `bool` | Whether the ragdoll is to be turned off at the start. |
-| `ControlColliders` | `bool` | Whether the colliders are controlled by the ragdoll or not. |
-| `ChildrenBodies` | `Rigidbody[]` | All the rigidbodies on the children under this object. |
-| `ChildrenColliders` | `Collider[]` | All the colliders on the children under this object. |
-| `OnRagdollEnabled` | `UnityEvent` | Event which is called when the ragdoll is enabled. |
-| `OnRagdollDisabled` | `UnityEvent` | Event which is called when the ragdoll is disabled. |
+## Step 1 : Open the `Active Ragdoll Convertor` window by navigating to `UV` > `Ezy Ragdoll` >`Active Ragdoll Convertor`
+![](.README/active-ragdoll-convertor-menu.png)
 
-## Member Methods 
+## Step 2 : Drag your character in into the Ragdoll Container field
+## Step 3 : Adjust the strength (Optional) 
+## Step 4 : Click the `Convert to Active Ragdoll` button
+![](.README/active-ragdoll-convertor-window.png)
 
-### `FindReferences`
+## Step 5 : Now select the newly formed Object and click the `Initialize` button under the Active Ragdoll component
+![](.README/active-ragdoll-initialize.png)
 
-- `public void FindReferences()`
-Finds all the rigidbodies and colliders in the children of the GameObject. It stores them in `ChildrenBodies` and `ChildrenColliders`.
-
-### `SetRagdoll`
-
-- `public void SetRagdoll(bool activationState)`
-Sets the activation state of the ragdoll. Enables or disables the rigidbodies and colliders based on the `activationState`.
-    - `activationState` (`bool`): The desired activation state of the ragdoll (`true` to enable, `false` to disable).
-
-### `EnableRagdoll`
-
-- `public void EnableRagdoll()`
-Activates the ragdoll and invokes the `OnRagdollEnabled` event.
-
-### `DisableRagdoll`
-
-- `public void DisableRagdoll()`
-Deactivates the ragdoll and invokes the `OnRagdollDisabled` event.
-
-### `AddForce`
-
-- `public void AddForce(float force)`
-Activates the ragdoll and adds an explosive force to it at the object's position.
-  - `force` (`float`): The magnitude of the force to be added.
-
-- `public void AddForce(Vector3 force, ForceMode forceMode = ForceMode.Impulse)`
-Activates the ragdoll and adds a specified force to it.
-    - `force` (`Vector3`): The force to be applied.
-    - `forceMode` (`ForceMode`, optional): The mode to use when applying the force (default is `ForceMode.Impulse`).
-
-- `public void AddForce(float force, Vector3 forcePoint, ForceMode forceMode = ForceMode.Impulse)`
-Activates the ragdoll and adds an explosive force to it at the specified point.
-    - `force` (`float`): The magnitude of the force to be applied.
-    - `forcePoint` (`Vector3`): The point at which the force will be applied.
-    - `forceMode` (`ForceMode`, optional): The mode to use when applying the force (default is `ForceMode.Impulse`).
+And that's it you can now assign an Animator on the `Character/Animated` object and the active ragdoll will now try to replicate!
 
 
 
-## Usage Example
+# BaseRagdoll.cs
 
-```csharp
-using UnityEngine;
-using UV.EzyRagdoll;
-using System.Collections;
+`BaseRagdoll` is the base ragdoll script that controls the limp state of a ragdoll by enabling or disabling its rigidbodies and colliders.
 
-public class RagdollExample : MonoBehaviour
-{
-    [SerializeField] private Ragdoll _ragdoll;
+## Fields
 
-    IEnumerator Start()
-    {
-        // Find and initialize references to the child components
-        _ragdoll.FindReferences();
+| Name                 | Type          | Description                                                              |
+|----------------------|---------------|--------------------------------------------------------------------------|
+| `IsLimp`             | `bool`        | Whether the ragdoll is currently limp.                                   |
+| `InitialLimpState`   | `bool`        | Whether the ragdoll should start limp on `Awake()`.                      |
+| `ControlColliders`   | `bool`        | Whether the colliders should be enabled/disabled along with the ragdoll. |
+| `ChildrenBodies`     | `Rigidbody[]` | All child rigidbodies, auto-collected by `FindReferences()`.            |
+| `ChildrenColliders`  | `Collider[]`  | All child colliders, auto-collected by `FindReferences()`.              |
+| `OnLimpEnabled`      | `UnityEvent`  | Invoked when limp is enabled.                                           |
+| `OnLimpDisabled`     | `UnityEvent`  | Invoked when limp is disabled.                                          |
 
-        // Enable the ragdoll
-        _ragdoll.EnableRagdoll();
 
-        // Add a force to the ragdoll
-        _ragdoll.AddForce(100f);
+## Methods
 
-        // Disable the ragdoll after 5 seconds
-        yield return new WaitForSeconds(5);
-        _ragdoll.DisableRagdoll();
-    }
-}
+### ❇️ `void FindReferences()`
+
+Finds and stores all child rigidbodies and colliders under the GameObject. Automatically called by Unity if not manually assigned.
+
+### ❇️ `void EnableLimp()`
+
+Sets the ragdoll to limp and invokes `OnLimpEnabled`.
+
+### ❇️ `void DisableLimp()`
+
+Disables limp and invokes `OnLimpDisabled`.
+
+### ❇️ `void SetLimpState(bool isLimp)`
+
+Enables or disables the limp state of the ragdoll.  
+- `isLimp`: `true` to make the ragdoll limp, `false` to disable limp state.
+
+
+# Ragdoll.cs : [`BaseRagdoll`](./BaseRagdoll.cs)
+
+`Ragdoll` is a concrete implementation of `BaseRagdoll` that actively manages the physics and collision state of child rigidbodies and colliders when switching limp states.
+
+## Methods
+
+### ❇️ `void Reset()`
+
+Unity callback that is invoked when the component is reset.  
+Calls `FindReferences()` to populate rigidbody and collider arrays.
+
+### ❇️ `void SetLimpState(bool limpState)`
+
+Overrides `BaseRagdoll`'s method to manage physical and collision state of children.
+
+- `limpState`: `true` to enable ragdoll physics, `false` to disable.
+
+#### Behaviour:
+- Sets all child `Rigidbody` components to `isKinematic = !limpState`.
+- If `ControlColliders` is enabled, enables/disables each collider based on the limp state.
+- The root GameObject’s own collider is **not** affected by the toggle.
+
+
+# ActiveRagdoll.cs : [`BaseRagdoll`](./BaseRagdoll.cs)
+
+`ActiveRagdoll` extends `BaseRagdoll` to follow an animated object using physics, allowing hybrid behaviour between animation and ragdoll simulation.  
+It interpolates rigidbody velocities to follow corresponding animated bones in real time when not limp.
+
+## Fields
+
+| Name              | Type               | Description                                                                 |
+|-------------------|--------------------|-----------------------------------------------------------------------------|
+| `FollowStrength`  | `float`            | The follow strength used to match the ragdoll to the animated object.       |
+| `RagdollRoot`     | `Transform`        | The root `Transform` of the ragdoll hierarchy.                              |
+| `AnimatedRoot`    | `Transform`        | The root `Transform` of the animated hierarchy.                             |
+| `Joints`          | `ConfigurableJoint[]` | The joints used to simulate muscle-like movement.                        |
+| `RagdollBones`    | `Transform[]`      | The bones of the ragdoll, mapped from `ChildrenBodies`.                    |
+| `AnimatedBones`   | `Transform[]`      | The bones from the animated object that ragdoll bones follow.              |
+
+## Methods
+
+### ❇️ `void Reset()`
+
+Unity callback that runs when the component is reset.  
+Calls `Initialize()` to populate internal references.
+
+### ❇️ `void Initialize(Transform ragdollContainer, Transform animatedContainer)`
+
+Initialises the ragdoll using a specified ragdoll root and animated root.
+
+- `ragdollContainer`: The transform that contains all ragdoll bones.
+- `animatedContainer`: The transform that contains all animated bones.
+
+### ❇️ `void Initialize()`
+
+Initialises internal references.  
+- Finds all rigidbodies and colliders using `FindReferences()`.  
+- Configures them using `InitializeRigidbodies()`.
+
+### ❇️ `void FindReferences()`
+
+Finds and stores:
+- Child rigidbodies and colliders via base method.
+- All bone pairs under `RagdollRoot` and `AnimatedRoot`.
+- Corresponding joints for each bone.
+
+### ❇️ `void SetLimpState(bool limpState)`
+
+Overrides `BaseRagdoll.SetLimpState`.  
+- Increases drag and angular drag when not limp to reduce jitter.  
+- Reduces them when limp to allow full physical response.
+
+### ❇️ `void InitializeRigidbodies()`
+
+Configures each rigidbody:
+- `drag = 20`, `angularDrag = 1`
+- `isKinematic = false`
+- Interpolation and collision detection enabled
+
+### 🔁 `void FixedUpdate()`
+
+Performs physics-based following of the animated bones.  
+- Calculates target velocity and angular velocity from animated bones.
+- Interpolates current velocity and angular velocity towards targets using `FollowStrength`.
+
+### 🔧 `string GetPath(Transform root, Transform target)`
+
+Utility method that constructs a hierarchical path from `root` to `target`.  
+Used to match ragdoll bones to corresponding animated bones.

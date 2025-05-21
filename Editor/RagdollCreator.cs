@@ -13,7 +13,7 @@ namespace UV.EzyRagdoll.Editors
     {
         protected override string WindowHeader => "Ragdoll Creator";
 
-        [MenuItem("UV/Ezy Ragdoll/Ragdoll Creator")]
+        [MenuItem("UV/Ezy Ragdoll/Ragdoll Creator", priority = 11)]
         public static void Initialize()
         {
             var window = GetWindow<RagdollCreator>();
@@ -41,7 +41,7 @@ namespace UV.EzyRagdoll.Editors
         /// <summary>
         /// The strength of the ragdoll
         /// </summary>
-        private float _strength;
+        private float _strength = 10;
 
         protected override void OnGUI()
         {
