@@ -14,8 +14,13 @@ namespace UV.EzyRagdoll
         /// <summary>
         /// The follow strength for the active ragdoll
         /// </summary>
-        [field: Header("Strength Settings")]
-        [field: SerializeField, ShowIf(nameof(IsLimp), false)] public float FollowStrength { get; private set; } = 10;
+        [field: Header("Active Ragdoll Settings")]
+        [field: SerializeField, ShowIf(nameof(IsLimp), false)] public float FollowStrength { get; private set; } = 100;
+
+        /// <summary>
+        /// Whether self collision is to be allowed
+        /// </summary>
+        [field: SerializeField, ShowIf(nameof(ControlColliders), true)] public bool AllowSelfCollision { get; private set; } = false;
 
         /// <summary>
         /// The root of the ragdoll
@@ -79,6 +84,23 @@ namespace UV.EzyRagdoll
                 //Remove drag if it is to be limp, else have drag to prevent shaking of bones
                 rb.drag = limpState ? 1 : 20;
                 rb.angularDrag = limpState ? 0 : 1;
+            }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            //Ignore collisions
+            if (!ControlColliders) return;
+            var colliders = GetComponentsInChildren<Collider>();
+            for(int i = 0; i < colliders.Length; i++)
+            {
+                for(int j = 0; j < colliders.Length; j++)
+                {
+                    if (i == j) continue;
+                    Physics.IgnoreCollision(colliders[i], colliders[j], !AllowSelfCollision);
+                }   
             }
         }
 
