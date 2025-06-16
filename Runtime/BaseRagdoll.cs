@@ -59,6 +59,7 @@ namespace UV.EzyRagdoll
         /// <summary>
         /// Finds the required references 
         /// </summary>
+        [ContextMenu("Find References")]
         public virtual void FindReferences()
         {
             //Find all the rigidbodies and colliders on the children of the object

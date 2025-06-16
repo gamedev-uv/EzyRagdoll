@@ -13,12 +13,6 @@ namespace UV.EzyRagdoll
     {
         private void Reset() => FindReferences();
 
-        [Button]
-        public override void FindReferences()
-        {
-            base.FindReferences();
-        }
-
         /// <inheritdoc/>
         protected override void SetLimpState(bool limpState)
         {
