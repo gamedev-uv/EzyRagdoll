@@ -21,6 +21,11 @@
       "displayName":  "Rig Templates Sample",
       "description": "Contains some sample rig templates",
       "path": "Samples/Rig Templates Sample"
+    },
+    {
+      "displayName": "Triggers",
+      "description": "Contains some sample Ragdoll triggering scripts",
+      "path": "Samples/Triggers"
     }
   ]
 }
