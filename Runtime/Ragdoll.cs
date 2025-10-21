@@ -26,7 +26,11 @@ namespace UV.EzyRagdoll
             {
                 var rb = ChildrenBodies[i];
                 if (rb == null) continue;
-                rb.isKinematic = !limpState;
+
+                if (rb.transform == transform)
+                    rb.isKinematic = limpState;
+                else
+                    rb.isKinematic = !limpState;
             }
 
             if (!ControlColliders) return;
