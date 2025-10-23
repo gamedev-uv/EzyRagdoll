@@ -40,6 +40,24 @@ namespace UV.EzyRagdoll
         [field: ShowIf(nameof(ControlColliders), true)] public Collider[] ChildrenColliders { get; protected set; }
 
         /// <summary>
+        /// Whether the ragdoll is to be enabled when it collides with objects
+        /// </summary>
+        [field: Header("Triggers")]
+        [field: SerializeField] public bool EnableLimpOnCollision { get; set; }
+
+        /// <summary>
+        /// The tag which should be on the object the ragdoll collided with in order to turn on limp
+        /// </summary>
+        [field: ShowIf(nameof(EnableLimpOnCollision), HideMode.ReadOnly, true)]
+        [field: SerializeField, TagSelector] public string ColliderTargetTag { get; set; } = "RagdollEnabler";
+
+        /// <summary>
+        /// The force multiplier which is to be used
+        /// </summary>
+        [field: ShowIf(nameof(EnableLimpOnCollision), HideMode.ReadOnly, true)]
+        [field: SerializeField, Range(0.5f, 10f)] public float CollisionForceMultiplier { get; set; } = 5f;
+
+        /// <summary>
         /// Event which is called when the ragdoll's limp state is enabled
         /// </summary>
         [field: Header("Events")]
@@ -83,6 +101,20 @@ namespace UV.EzyRagdoll
         /// </summary>
         [Button]
         public virtual void DisableLimp() => SetLimpState(false);
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!EnableLimpOnCollision) return;
+            if (!collision.collider.CompareTag(ColliderTargetTag)) return;
+
+            //Enable the ragdoll
+            EnableLimp();
+
+            //Add force at the collision contact point
+            var contact = collision.GetContact(0);
+            var force = contact.impulse.magnitude * CollisionForceMultiplier;
+            AddForce(force, contact.point);
+        }
 
         /// <summary>
         /// Sets the limp state of the ragdoll
